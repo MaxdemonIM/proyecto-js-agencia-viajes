@@ -1,0 +1,402 @@
+	<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>Siganviendo Agencia de Viajes</title>
+  </head>
+  <body>
+    <div id="todaLaPagina">
+      <header>
+        <div id="logo">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBRWovuUPFEU2kx5mlt5sjfigAccmFr8Jq8w&s" alt="logo">
+        </div>
+
+        <!--NAV-->
+        <div id="divNav">
+          <nav>
+            <ul id="navPrincipal">
+            </li>
+            <li class="soloAdmin">
+              <a class="btnNavegacion" data-pag-objetivo="#divAdministrarDestinos">Administrar destinos</a>
+              </li>
+              <li class="soloAdmin">
+                <a class="btnNavegacion" data-pag-objetivo="#divInfoGanancias">Ver informe de ganancias</a>
+              </li>
+              <li class="soloAdmin">
+                <a class="btnNavegacion" data-pag-objetivo="#divAgregarDestinos">Nuevo destino</a>
+              </li>
+              <li class="soloAdmin">
+                <a class="btnNavegacion" data-pag-objetivo="#divListadoDeReservas">Ver listado de reservas</a>
+              </li>
+              <li class="soloUser">
+                <a class="btnNavegacion" data-pag-objetivo="#divHistorialDeReservas">Mis reservas</a>
+              </li>
+              <li class="soloUser">
+                <a class="btnNavegacion" data-pag-objetivo="#divExplorarDestinos" data-titulo-pagina="Ver destinos">Explorar destinos</a>
+              </li>
+              <li class="soloUser">
+                <a class="btnNavegacion" data-pag-objetivo="#divExplorarDestinosEnOferta" data-titulo-pagina="Ver destinos en oferta">Ver destinos en oferta </a>
+              </li>
+              <!--BOTON LOGOUT-->
+              <li>
+                <a id="btnLogout">Logout</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <!--Interfaz visible para el cliente-->
+
+        
+        <!--Login visible para admin y cliente-->
+        <div class="contenedor" id="divLogin">
+          <h3>Iniciar sesión</h3>
+			<p>Para testing utilizar los siguientes user y los password </p>
+
+			<p>Perfil admin user:admin1 password: adminpass1</p>
+			<p>Perfil cliente user: jperez  password:passworD4561
+			</p>
+
+          <label for="usuarioLogin">Nombre de Usuario:</label>
+          <input type="text" value="" id="usuarioLogin" placeholder="Nombre de usuario">
+
+          <label for="passwordLogin">Contraseña:</label>
+          <input type="password" value="" id="passwordLogin" placeholder="Contraseña">
+
+          <input type="button" id="btnLogin" value="Iniciar sesión">
+
+          <p id="pErroresLogin"></p>
+
+          <a id="btnAbrirRegistro" class="btnNavegacion" data-pag-objetivo="#divRegistro">Registrarse como cliente</a>
+        </div>
+
+        <br>
+        <br>
+        <!--Termina login-->
+
+
+
+        <!-- Pagina principal cliente -->
+        <div class="contenedor" id="paginaPrincipalUsuario">
+          <h1>Bienvenido</h1>
+          <p>Utilice el menú de navegación de la parte superior y viaje con nosotros!</p>
+        </div>
+        <!-- Pagina principal administrador -->
+        <div class="contenedor" id="paginaPrincipalAdmin">
+          <h1>Bienvenido administrador</h1>
+        </div>
+
+        <!--Registro de cliente-->
+
+        <div class="contenedor" id="divRegistro">
+          <h3>Registro</h3>
+          <label for="nombreReg">Nombre</label>
+          <input type="text" id="nombreReg" placeholder="Tu nombre">
+
+          <label for="apellidoReg">Apellido</label>
+          <input type="text" id="apellidoReg" placeholder="Tu apellido">
+
+          <label for="usuarioReg">Nombre de Usuario</label>
+          <input type="text" id="usuarioReg" placeholder="Nombre de usuario">
+
+          <label for="passwordReg">Contraseña</label>
+          <input type="password" id="passwordReg" placeholder="Contraseña">
+
+          <label for="tarjetaReg">Número de Tarjeta</label>
+          <input type="text" id="tarjetaReg" placeholder="WWWW XXXX YYYY ZZZZ">
+
+          <label for="cvcReg">CVC</label>
+          <input type="number" id="cvcReg" placeholder="CVC (3 dígitos)">
+
+          <input type="button" value="Registrarse" id="btnRegistrarse">
+
+          <input type="button" value="Volver al inicio" id="btnVolverAlInicio">
+
+
+          <p id="pErroresReg"></p>
+        </div>
+
+        <!--Explorar destinos visible para cliente-->
+        <div class="contenedor" id="divExplorarDestinos">
+          <h3>Explorar destinos</h3>
+          <p>Los destinos en oferta muestran el precio final (el descuento ya fue previamente aplicado).</p>
+          <table id="DestinosClientes">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio Por Persona</th>
+                <th>Cupos disponibles</th>
+                <th>Está En Oferta (10%)</th>
+                <th>Imagen</th>
+              </tr>
+            </thead>
+            <tbody id="tBodyDestinosClientes">
+            </tbody>
+          </table>
+        </div>
+        <!--Termina explorar destinos-->
+        
+        <!--Destinos en oferta visible para cliente-->
+
+        <div class="contenedor" id="divExplorarDestinosEnOferta">
+          <h3>Destinos en oferta</h3>
+          <p>Los destinos en oferta muestran el precio final (el descuento ya fue previamente aplicado).</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio Por Persona</th>
+                <th>Imagen</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody id="tBodyDestinosEnOfertaCliente">              
+            </tbody>
+          </table>
+        </div>
+
+
+        <!--Reservar destino visible para cliente-->
+        <div class="contenedor" id="divReservarDestino">
+          <h3 id="hReservar"></h3>
+          <img width="1000px" src="" id="imgReservarDestino">
+          <br>
+          <br>
+          <p id="pMillasActuales"></p>
+          
+          <label for="numCantidadPasajeros">Ingrese la cantidad de pasajeros</label>
+          <input type="text" id="numCantidadPasajeros">
+          
+
+          <label for="slcMedioDePago">Medio de pago:</label>
+          <select id="slcMedioDePago">
+           
+            <option value="d">Dinero</option>
+            <option value="m">Millas</option>
+          </select>  
+          
+          <input type="button" value="Reservar" id="btnSolicitarReservaCliente">
+          
+          <p id="pReserva"></p>
+        </div>  
+
+        <!--Termina reservar destino-->
+
+        <!--Historial De Reservas destino visible para cliente-->
+
+        <div class="contenedor" id="divHistorialDeReservas">
+          <h3>Historial De Reservas</h3>
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre del destino</th>
+                <th>Cantidad de personas reservadas</th>
+                <th>Monto total de la reserva</th>
+                <th>Estado de la reserva</th>
+                <th>Imagen</th>
+                <th>Cancelar reserva</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyRenderizarMisReservas"></tbody>
+          </table>
+        </div>
+
+        <!--Termina historial de reservas-->
+
+
+
+        <!--Funciones Admin-->
+
+
+        <!-- Administrar destinos visible para admin -->
+        <div class="contenedor" id="divAdministrarDestinos">
+          <h3>Administrar destinos</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre del destino</th>
+                <th>Precio</th>
+                <th>Descripción</th>
+                <th>URL Imagen</th>
+                <th>Cupos</th>
+                <th>Estado del destino</th>
+                <th>Destino en oferta</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyAdministrarDestinos"></tbody>
+          </table>
+        </div>
+
+        <!--Termina administrar destinos visible para admin-->
+
+
+        <!--Empieza modal destinos-->
+
+
+        <div class="contenedor" id="modalEditarDestinos" style="display: none">
+          <h2 id="hModal"></h2>
+          <form id="formEditarDestinos">
+            <label for="editarNombre">Nombre:</label>
+            <input type="text" id="editarNombre" /><br />
+
+            <label for="editarPrecio">Precio:</label>
+            <input required type="text" id="editarPrecio" /><br />
+
+            <label for="editarDescripcionDestino">Descripción del destino:</label>
+            <input required type="text" id="editarDescripcionDestino" /><br />
+            
+            <label for="editarURLImagen">Imagen</label>
+            <input type="text" id="editarURLImagen"><br>
+
+            <label for="editarCupos">Cupos:</label>
+            <input type="text" id="editarCupos"><br>
+
+            <label for="editarEnOferta">En oferta:</label>
+            <input type="checkbox" id="editarEnOferta"><br>
+            
+
+
+            <p id="erroresEditarDestino" style="color: red"></p>
+
+            <button type="button" id="btnGuardarCambios">Guardar</button>
+            <button type="button" id="btnCerrarModal">Cancelar</button>
+          </form>
+        </div>
+        <!--Termina modal visible-->
+
+
+
+        <!--Empieza INFORME DE GANANCIAS -->
+
+        <div class="contenedor" id="divInfoGanancias">
+          <h3>Informe de ganancias</h3>
+          <p id="informeGanancia"></p>
+          <table>
+            <thead>
+              <tr>
+                <th>Destino</th>
+                <th>Imagen</th>
+                <th>Cantidad de Personas</th>
+                <th>Ganancias en Efectivo</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyInformeDeGanancias"></tbody>
+          </table>
+        </div>
+
+        <!--Termina INFORME DE GANANCIAS -->
+
+
+
+        
+        <!-- Empieza agregar destinos visible para admin-->
+
+        <div class="contenedor" id="divAgregarDestinos">
+          <h3>Agregar destino</h3>
+          <label for="txtNombreDestino">Nombre de destino:</label>
+          <input type="text" id="txtNombreDestino">
+          <label for="txtPrecioPorPersona">Precio Por Persona</label>
+          <input type="number" id="txtPrecioPorPersona">
+          <label for="txtDescripcion">Descripción</label>
+          <textarea id="txtDescripcion" name="Comentarios" rows="3" cols="30" maxlength="250"></textarea>
+          <label for="urlAgregarImagen">URL de la imagen de referencia:</label>
+          <input type="link" id="urlAgregarImagen">
+          <label for="numAgregarCupos">Cantidad de cupos disponibles:</label>
+          <input type="number" id="numAgregarCupos">
+          <input type="button" id="btnAgregarDestinos" value="Agregar destino">
+          <p id="pErroresAgregarDestino">
+        </div>
+
+        <!-- Termina agregar destinos visible-->
+
+
+        <!--Listar y aprobar o cancelar reserva visible para admin-->
+
+        <div class="contenedor" id="divListadoDeReservas">
+          <h3>Lista de reservas pendientes</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Destino</th>
+                <th>Cantidad de cupos solicitados</th>
+                <th>Cantidad de cupos restantes</th>
+                <th>Usuario</th>
+                <th>Metodo de pago</th>
+                <th>Precio final</th>
+                <th>Saldo</th>
+                <th>Millas</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyReservasPendientes"></tbody>
+          </table>
+        </div>
+
+        <!--termina lista pendientes-->
+
+
+        <!--Empieza reservas aprobadas-->
+
+        <div class="contenedor" id="divReservasAprobadas">
+          <h3>Lista de reservas aprobadas</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Destinos</th>
+                <th>cupos solicitados</th>
+                <th>Usuario</th>
+                <th>Metodo de pago</th>
+                <th>Saldo</th>
+                <th>Millas</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyReservasAprobadas"></tbody>
+          </table>
+        </div>
+
+        <!--termina lista Aprobadas-->
+
+
+
+        <!--Empieza reservas canceladas-->
+
+
+          <div class="contenedor" id="divReservasCanceladas">
+          <h3>Lista de reservas canceladas</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Destinos</th>
+                <th>cupos solicitados</th>
+                <th>Usuario</th>
+                <th>Metodo de pago</th>
+                <th>Saldo</th>
+                <th>Millas</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyReservasCanceladas"></tbody>
+          </table>
+        </div>
+
+        <!--Terminan reservas canceladas-->
+
+        
+      </main>
+    </div>
+
+    <script src="js/class.js"></script>
+    <script src="js/system.js"></script>
+    <script src="js/code.js"></script>
+  </body>
+</html>
