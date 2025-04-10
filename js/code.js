@@ -48,8 +48,11 @@ document.querySelector("#btnGuardarCambios").addEventListener("click", guardarCa
 //boton cambios modal editrar
 document.querySelector("#btnCerrarModal").addEventListener("click", cerrarModal);
 
-
-
+document.querySelector("#divLogin").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    login();
+  }
+});
 
 //Funciones
 
@@ -70,6 +73,7 @@ function ocultarTodosLosElementos() {
       todasLasPaginas[i].style.display = "none";
     };
 };
+
 
 function login(){
   let nombreDeUsuario = document.querySelector("#usuarioLogin").value;
@@ -115,31 +119,29 @@ function volverDelRegistroAlLogIn(){
 }
 
 function ocultarElementosAdmin() {
-    //querySelectorAll devuelve un array con todos los elementos que coinciden en criterio
+
     let todasLasPaginas = document.querySelectorAll(".soloAdmin");
 
     for (let i = 0; i < todasLasPaginas.length; i++) {
-      //Recorremos los elementos y los ocultamos
+      //Recorremos los elementos con clase .soloAdmin y los ocultamos
       todasLasPaginas[i].style.display = "none";
     };
 };
 
 function mostrarElementosAdmin() {
-    //querySelectorAll devuelve un array con todos los elementos que coinciden en criterio
     let todasLasPaginas = document.querySelectorAll(".soloAdmin");
 
     for (let i = 0; i < todasLasPaginas.length; i++) {
-        //Recorremos los elementos y los ocultamos
+      //Recorremos los elementos con clase .soloAdmin y los mostramos
         todasLasPaginas[i].style.display = "block";
     };
 };
 
 function ocultarElementosUser() {
-    //querySelectorAll devuelve un array con todos los elementos que coinciden en criterio
     let todasLasPaginas = document.querySelectorAll(".soloUser");
 
     for (let i = 0; i < todasLasPaginas.length; i++) {
-        //Recorremos los elementos y los ocultamos
+      //Recorremos los elementos con clase .soloUser y los ocultamos
         todasLasPaginas[i].style.display = "none";
     };
 };
@@ -149,7 +151,7 @@ function mostrarElementosUser() {
     let todasLasPaginas = document.querySelectorAll(".soloUser");
 
     for (let i = 0; i < todasLasPaginas.length; i++) {
-      //Recorremos los elementos y los ocultamos
+      //Recorremos los elementos con clase .soloUser y los mostramos
       todasLasPaginas[i].style.display = "block";
     };
 };
@@ -168,6 +170,7 @@ function habilitarNavegacion() {
   for (let i = 0; i < botonesNavegacion.length; i++) {
     let item = botonesNavegacion[i];
     //cada vez que clickeo un elemento con clase btnNavegacion, llamo a "mostrarPagina"
+
     item.addEventListener("click", mostrarPagina);
   }
 };
@@ -175,7 +178,6 @@ function habilitarNavegacion() {
 function mostrarPagina() {
   /**
   * this.getAttribute, recibe el atributo del cual quiero saber el valor
-  * en este caso muestra las paginas
   */
   let idPagina = this.getAttribute("data-pag-objetivo");
   ocultarTodosLosElementos();
@@ -224,13 +226,13 @@ function agregarDestino(){
 };
 
 /**
- * 
+ * Valida que los campos no esten vacíos y que los valores numéricos sean números mayores a 0
  * @param {String} nombre 
  * @param {Number} precio 
  * @param {String} descripcion 
  * @param {String} url 
  * @param {Number} cupos 
- * @returns 
+ * @returns un String con errores
  */
 
 function validarContenidoDestino (nombre, precio, descripcion, url, cupos){
@@ -390,12 +392,11 @@ function renderizarTablaDestinosEnOferta(){
 
 let destinoClickeado;
 
-//abrir div de reservas con el destino a reservar que coincida con el indice que le corresponde
+//abrir div para reservar destino, con el destino que coincida con el ide del data-index del boton
 function mostrarDivReservas(){
   let pReserva = document.querySelector("#pReserva");
   pReserva.innerHTML = "";
   ocultarTodosLosElementos();
-  console.log(this)
   document.querySelector("#divReservarDestino").style.display = "block";
   let data = this.getAttribute("data-index");
 
@@ -406,15 +407,15 @@ function mostrarDivReservas(){
   document.querySelector("#hReservar").innerHTML = `Reservar viaje a ${destino.nombre}`;
   //img dinámica
   document.querySelector("#imgReservarDestino").src = `${destino.url}`;
-
+  //
   document.querySelector("#pMillasActuales").innerHTML=`Usted tiene ${sistema.usuarioLogueado.millas} millas`;
   
-
+  mostrarMillasUsuario();
 }
 
 
 
-//solicitar reserva cliente
+//la funcion toma la solicitud de reserva del cliente y la carga
 function solicitarReserva(){
   let medioDePago = document.querySelector("#slcMedioDePago").value;
   let cantidadDePasajeros = document.querySelector("#numCantidadPasajeros").value.trim();
@@ -426,26 +427,38 @@ function solicitarReserva(){
     esConMillas = true;
   }
   
+  if(existeReservaPreviaDelDestinoPorEsteUsuario()){
+    pReserva.innerHTML += "<br>Ya tiene una reserva para este destino, elija otro.";
+  }
 
   if(cantidadDePasajeros <= 0){
     pReserva.innerHTML += "<br>Elija un valor de pasajeros mayor a 0.";
   };
 
 
-  for (let i = 0; i < sistema.reservas.length; i++) {
-    let reserva = sistema.reservas[i];
-    if (reserva.cliente === sistema.usuarioLogueado && reserva.destino === destinoClickeado) {
-      pReserva.innerHTML ="<br>Ya tiene una reserva para este destino, elija otro.";
-    };
-  };
 
   if(pReserva.innerHTML === ""){
     sistema.ordenarReservaDestino(Number(cantidadDePasajeros), esConMillas, destinoClickeado.id);
     pReserva.innerHTML ="Tu reserva ha sido solicitada, nuestro equipo de administradores la procesaran cuanto antes";
+    document.querySelector("#slcMedioDePago").value = "null";
     document.querySelector("#numCantidadPasajeros").value = "";
-
   };
-  
+};
+
+/**
+ * Recorre el array de reservas  y verifica si hay alguna reserva con el mismo cliente que el que está logueado y a la vez el destino clickeado es el mismo que el de la reserva del cliente
+ * @returns booleano
+ */
+
+function existeReservaPreviaDelDestinoPorEsteUsuario(){
+  let existe = false;
+  for (let i = 0; i < sistema.reservas.length; i++) {
+    let reserva = sistema.reservas[i];
+    if (reserva.cliente === sistema.usuarioLogueado && reserva.destino === destinoClickeado) {
+      existe = true;
+    };
+  };
+  return error;
 };
 
 
@@ -490,7 +503,7 @@ function cancelarReservaCliente(){
 };
 
 
-//Administrar Destinos Admin
+//Administrar Destinos 
 
 
 
@@ -676,7 +689,6 @@ function cambiarEstadoReserva() {
 function cambiarEstadoReservaCancelado(){
   let idReserva = this.getAttribute("data-reserva");
   let estadoObjetivo = this.getAttribute("data-estado-objetivo");
-  console.log(estadoObjetivo)
 
   let resultadoCambioDeEstado = sistema.cambiarEstadoReserva(idReserva, estadoObjetivo);
 
@@ -711,5 +723,5 @@ function renderizarInformeDeGanancias() {
   };
   document.querySelector("#tbodyInformeDeGanancias").innerHTML = htmlTabla;
   
-  document.querySelector("#informeGanancia").innerHTML = `En total se han ganando $${gananciasTotales} y hemos tenido ${clientesTotales} clientes`;
+  document.querySelector("#informeGanancia").innerHTML = `En total se van ganando $${gananciasTotales} y hemos tenido ${clientesTotales} clientes`;
 };

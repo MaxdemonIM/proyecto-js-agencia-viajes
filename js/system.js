@@ -49,12 +49,12 @@ class Sistema {
 
 
 
-    /**
-     * Siempre que queramos guardar un cliente,
-     * lo hacemos a traves de sistema.guardarCliente......
-     * no usar directamente el new Cliente
-     */
-    /**
+  /**
+   * Siempre que queramos guardar un cliente,
+   * lo hacemos a traves de sistema.guardarCliente......
+   * no usar directamente el new Cliente
+   */
+  /**
    *
    * @param {String} nombre
    * @param {String} apellido
@@ -229,7 +229,7 @@ class Sistema {
 
   /**
    * Cambia el estado de las reservas segun el caso, posteriormente calculando los datos a cargar en los clientes y destinos y retorna
-   * el resultado .
+   * el outcome.
    * 
    * @param {String} idReserva 
    * @param {String} estadoObjetivo 
